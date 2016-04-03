@@ -1,0 +1,11 @@
+<div id="list">
+	<img src="http://img.yonhapnews.co.kr/photo/yna/YH/2015/11/25/PYH2015112511480005400_P2.jpg">
+
+	<%= render partial: 'book', collection: @books, locals: {type: :details} %> 
+
+	<hr />
+	<% @books.each do |book| %>
+		<%= render 'book', book: book, type: :details %>
+	<% end %>
+
+</div>

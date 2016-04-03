@@ -1,0 +1,14 @@
+<p>
+<% type = :details if type.nil? %>
+<% if type == :details %>
+<br/>
+<img src="http://www.wings.msn.to/books/<%= book.isbn%>/<%= book.isbn%>_logo.jpg" width="100" height="100" /><br />
+<% end %>
+
+<%= book.isbn %> <br>
+<%= book.title %><br />
+<%= book.publish %><br />
+가격 <%= book.price %><br />
+ISBN <%= book.isbn %><br />
+출간일: <%= book.published %><br />
+</p>
