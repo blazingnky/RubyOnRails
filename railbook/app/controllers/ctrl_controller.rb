@@ -1,4 +1,8 @@
 class CtrlController < ApplicationController
+	# before와 after 필터 등록
+	before_action :start_logger, only: [:index, :index2]
+	after_action :end_logger, except: :index
+
 	def para
 		render text: 'id 매개 변수: ' + params[:id]
 	end
@@ -58,5 +62,80 @@ class CtrlController < ApplicationController
 		else
 			render text: @author.errors.full_messages[0]
 		end
+	end
+
+	def rdto
+		redirect_to action: :req_head
+	end
+
+	def show_photo
+		# 라우트 매개 변수가 지정된 경우에는 해당 값을, 지정되지 않은 경우에는 1을 설정
+		id = params[:id] ? params[:id] : 1
+		# authors 테이블에서 id 값을 키로 레코드 추출
+		@author = Author.find(id)
+		#photo 필드(바이너리 자료형)를 응답
+		send_data @author.photo, type: @author.ctype, disposition: :inline
+	end
+
+	def log
+		logger.unknown('nuknown')
+		logger.fatal('fatal')
+		logger.error('error')
+		logger.warn('warn')
+		logger.info('info')
+		logger.debug('debug')
+		render text: '로그는 콘솔 또는 로그 파일에서 확인해주세요.'
+	end
+
+	def get_xml
+		@books = Book.all
+		render xml: @books
+	end
+
+	def get_json
+		@books = Book.all
+		render json: @books
+	end
+
+	def cookie
+		# 템플릿 변수 @email에 쿠키 값을 설정
+		@email = cookies[:email]
+	end
+
+	def cookie_rec
+		# 쿠키 :email을 설정(유효 기간은 3개월)
+		cookies[:email] = { value: params[:email], expires: 3.months.from_now, http_only: true }
+		render text: '쿠키를 저장했습니다.'
+	end
+
+	def session_show
+		@email = session[:email]
+	end
+
+	def session_rec
+		session[:email] = params[:email]
+		render text: '세션을 저장했습니다.'
+	end
+
+	# 필터의 동작 확인을 위해 index 액션 정의
+	def index
+		sleep 3			# 필터의 실행 시간에 차이를 주고자 잠시 휴식
+		render text: 'index 액션이 실행되었습니다.'
+	end
+
+	def index2
+		sleep 1
+		render text: 'index2 액션이 실행되었습니다.'
+	end
+	
+	private
+	#  시작 시간을 로그로 등록
+	def start_logger
+		logger.debug('[Start] ' + Time.now.to_s)
+	end
+
+	# 종료 시간을 로그로 등록
+	def end_logger
+		logger.debug('[Finish] ' + Time.now.to_s)
 	end
 end

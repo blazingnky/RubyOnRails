@@ -70,9 +70,9 @@ ActiveRecord::Schema.define(version: 20160403043337) do
   create_table "members", force: :cascade do |t|
     t.string   "name"
     t.string   "email"
-    t.integer  "lock_version"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.integer  "lock_version", default: 0
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
   end
 
   create_table "memos", force: :cascade do |t|
@@ -101,9 +101,9 @@ ActiveRecord::Schema.define(version: 20160403043337) do
     t.string   "email"
     t.boolean  "dm"
     t.string   "roles"
-    t.integer  "reviews_count"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
+    t.integer  "reviews_count", default: 0
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
   end
 
 end
