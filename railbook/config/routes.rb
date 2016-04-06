@@ -1,11 +1,29 @@
+#require 'TimeConstraint'
+
 Rails.application.routes.draw do
   resources :magazines
   resources :members
   resources :fan_comments
-  resources :reviews
+  resources :reviews do
+    collection do
+      get :unapproval
+    end
+    member do
+      get :draft
+    end
+  end
+
   resources :authors
-  resources :users
-  resources :books
+  resources :users, only: [ :index, :new, :create, :edit, :update]
+  resources :books do
+    resources :reviews, shallow: true
+  end
+
+  #root to: 'ctrl#show_photo'
+
+  #정해진 시간에만 접근가능 ==> resources :books, constraint: TimeConstraint.new
+
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
